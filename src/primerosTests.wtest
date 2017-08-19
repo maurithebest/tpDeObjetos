@@ -1,0 +1,100 @@
+import tpObjetos.*
+describe "tests de tpObjetos" {
+
+	test "joaquin canta en el grupo Pimpinela, su habilidad es de 25" {
+		joaquin.agregarAGrupo("Pimpinela")
+		assert.equals(joaquin.habilidad(),25)
+
+	}
+	test "joaquin sale de el grupo Pimpinela y canta solo, su habilidad es de 20" {
+		joaquin.agregarAGrupo("Pimpinela")
+		joaquin.salirDeGrupo("Pimpinela")
+		assert.equals(joaquin.habilidad(),20)
+
+	}
+	test "lucia canta en el grupo Pimpinela, su habilidad es de 50" {
+		lucia.agregarAGrupo("Pimpinela")
+		assert.equals(lucia.habilidad(),50)
+
+	}
+	test "lucia sale de el grupo Pimpinela y canta sola, su habilidad es de 70" {
+		lucia.agregarAGrupo("Pimpinela")
+		lucia.salirDeGrupo("Pimpinela")
+		assert.equals(lucia.habilidad(),70)
+
+	}
+	test "luis aberto toca con la Fender, su habilidad es de 80" {
+		luisAlberto.tocaGuitarra(fender)
+		assert.equals(luisAlberto.habilidad(),80)
+}
+	test "luis aberto toca con una gibson sana, su habilidad es de 100" {
+		luisAlberto.tocaGuitarra(gibson)
+		gibson.estadoBuena()
+		assert.equals(luisAlberto.habilidad(),100)
+}
+	test "luis aberto toca con una gibson mala, su habilidad es de 40" {
+		luisAlberto.tocaGuitarra(gibson)
+		gibson.estadoMalo()
+		assert.equals(luisAlberto.habilidad(),40)
+}
+
+
+	test "joaquin no puede interpretar la familia" {
+		
+		assert.notThat(joaquin.interpretaBien(laFamilia))
+
+	}
+	test "joaquin puede interpretar cisne" {
+		assert.that(joaquin.interpretaBien(cisne))
+
+	}
+	test "lucia puede interpretar la familia" {
+		assert.that(lucia.interpretaBien(laFamilia))
+
+	}
+	test "lucia no puede interpretar cisne" {
+		assert.notThat(lucia.interpretaBien(cisne))
+
+	}
+	test "luis alberto puede interpretar la familia" {
+		assert.that(luisAlberto.interpretaBien(laFamilia))
+
+	}
+	test "luis alberto puede interpretar cisne" {
+		assert.that(luisAlberto.interpretaBien(cisne))
+
+	}
+	test "joaquin cobra por presentarse al luna park en grupo 50 pesos" {
+		joaquin.agregarAGrupo("Pimpinela")
+		assert.equals(joaquin.cobra(lunaPark),50)
+	}
+	test "cobra lucia a por presentarse en el luna park 500 pesos" {
+		assert.equals(lucia.cobra(lunaPark),500)
+
+	}
+	
+	test "cobra lucia por presentarse en la trastienda 400 pesos" {
+		assert.equals(lucia.cobra(laTrastienda),400)
+
+	}
+	test "cobra luis alberto por presentarse en el luna park 1000 pesos" {
+		assert.equals(luisAlberto.cobra(lunaPark),1000)
+
+	}
+	test "cobra luis alberto por presentarse en la trastienda 1200 pesos" {
+		assert.equals(luisAlberto.cobra(laTrastienda),1200)
+
+	}
+	test "el luna park paga a los artistas" {
+		joaquin.agregarAGrupo("Pimpinela")
+		
+		assert.equals(lunaPark.tienenQuePagar(),1550)
+
+	}
+	test "la trastienda paga a los artistas" {
+		joaquin.agregarAGrupo("Pimpinela")
+		
+		assert.equals(laTrastienda.tienenQuePagar(),1650)
+
+	}
+	}
