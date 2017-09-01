@@ -1,12 +1,3 @@
-<<<<<<< Updated upstream
-
-
-
-object joaquin{
-	var grupo =[]
-	var habilidad = 20
-	
-=======
 class Artista{
 	var nombre
 	var grupo=[]
@@ -14,28 +5,36 @@ class Artista{
 	var habilidad 
 	const criterio
 	var criterioDeCobro
-	constructor(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro){
+	var albunes
+	constructor(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro,unosAlbunes){
 		nombre=unNombre
 		estado=unEstado
 		habilidad=unaHabilidad
 		criterio=unCriterio
 		criterioDeCobro=unCriterioDeCobro
+		albunes=unosAlbunes
 	}
 	method nombre()=nombre
 	method estado()=estado
 	method criterio()=criterio
 	method habilidadSola()=habilidad
 	method criterioDeCobro()=criterioDeCobro
->>>>>>> Stashed changes
 	method grupo()=grupo
 	method agregarAGrupo(grupoAEntrar){grupo.add(grupoAEntrar)}
 	method salirDeGrupo(grupoASalir){grupo.remove(grupoASalir)
 		
 	}
+	method albunes()=albunes
 	method habilidad()=self.estado().habilidad(self.habilidadSola())
 	
 	method interpretaBien(unaCancion){return self.criterio().laInterpretaBien(unaCancion)}
 	method cobrar(lugar){return self.criterioDeCobro().cobrar(lugar,self.grupo().size())}
+	method esMinimalista(){return self.albunes().all({albun=>albun.albumCorto()})}
+	method duracionDeAlbunes(){return self.albunes().sum({albun=>albun.duracionAlbum()})}
+	method totalUnidadesSalidas(){return self.albunes().sum({albun=>albun.unidadesSalidas()})}
+	method totalUnidadesVendidas(){return self.albunes().sum({albun=>albun.unidadesVendidas()})}
+	method laPego(){return self.totalUnidadesVendidas>self.totalUnidadesSalidas()*0.75}
+
 }
 class Cantante inherits Artista{
 	
@@ -170,13 +169,43 @@ class Lugar{
 
 
 class Cancion{
+	var nombre
 	var duracion
 	var letra
-	constructor(unaDuracion,unaLetra){
+	constructor(unNombre,unaDuracion,unaLetra){
+		nombre=unNombre
 		duracion=unaDuracion
 		letra=unaLetra
 	}
+	method nombre()=nombre
 	method letra()=letra
 	method duracion()=duracion
 }
 
+class Album{
+	var nombre
+	var diaSalida
+	var mesSalida
+	var anioSalida
+	var canciones
+	var unidadesALaVenta
+	var unidadesVendidas
+	
+	constructor(unNombre,unDiaSalida,unMesSalida,unAnioSalida,unasCanciones,unasUnidadesALaVenta,unasUnidadesVendidas){
+	nombre=unNombre
+	diaSalida=unDiaSalida
+	mesSalida=unMesSalida
+	anioSalida=unAnioSalida
+	canciones=unasCanciones
+	unidadesALaVenta=unasUnidadesALaVenta
+	unidadesVendidas=unasUnidadesVendidas
+	}
+	
+	method nombre()=nombre
+	method canciones()=canciones
+	method unidadesSalientes()=unidadesALaVenta
+	method unidadesVendidas()=unidadesVendidas
+	method duracionAlbum(){return self.canciones().sum({cancion=>cancion.duracion()})
+	}
+	method albumCorto(){return self.canciones.all({cancion.duracion()<180})}
+}
