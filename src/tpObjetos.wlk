@@ -1,96 +1,129 @@
-class cantante{
-	var nombre
-	var estado
-	var habilidad 
-	constructor(unNombre,unEstado,unaHabilidad){
-		nombre=unNombre
-		estado=unEstado
-		habilidad=unaHabilidad
-	}
-	method nombre()=nombre
-	method estado()=estado
-	method habilidad()=habilidad
-	
-}
+<<<<<<< Updated upstream
+
 
 
 object joaquin{
 	var grupo =[]
 	var habilidad = 20
 	
+=======
+class Artista{
+	var nombre
+	var grupo=[]
+	var estado
+	var habilidad 
+	const criterio
+	var criterioDeCobro
+	constructor(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro){
+		nombre=unNombre
+		estado=unEstado
+		habilidad=unaHabilidad
+		criterio=unCriterio
+		criterioDeCobro=unCriterioDeCobro
+	}
+	method nombre()=nombre
+	method estado()=estado
+	method criterio()=criterio
+	method habilidadSola()=habilidad
+	method criterioDeCobro()=criterioDeCobro
+>>>>>>> Stashed changes
 	method grupo()=grupo
 	method agregarAGrupo(grupoAEntrar){grupo.add(grupoAEntrar)}
 	method salirDeGrupo(grupoASalir){grupo.remove(grupoASalir)
 		
 	}
+	method habilidad()=self.estado().habilidad(self.habilidadSola())
 	
-	method habilidad(){if(grupo.size()<1)
-		return habilidad
-		else return habilidad+5
-	}	
-	
-	method interpretaBien(cancion){
-	return cancion.duracion()>300
-	}
-	
-	method cobra(lunaPark){
-		if(grupo.size()<1)
-		return 100
-		else return 50
-	}
-	
+	method interpretaBien(unaCancion){return self.criterio().laInterpretaBien(unaCancion)}
+	method cobrar(lugar){return self.criterioDeCobro().cobrar(lugar,self.grupo().size())}
 }
-
-object lucia{
-	var habilidad=70
-	var grupo = []
+class Cantante inherits Artista{
 	
-	method grupo()=grupo
-	method agregarAGrupo(grupoAEntrar){grupo.add(grupoAEntrar)}
-	method salirDeGrupo(grupoASalir){grupo.remove(grupoASalir)
-		
-	}
-	method habilidad(){if(grupo.size()<1)
-		return habilidad
-		else return habilidad-20
-	}	
-	
-	
-	method interpretaBien(cancion){
-		return cancion.letra().contains("familia")}
-	method cobra(lugar){
-		if(lugar.capacidad()>5000)
-		return 500
-		else return 400
-	}
-	
+	constructor(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro)=super(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro){}
 }
+class Guitarrista inherits Artista{
+		var guitarra
+	constructor(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro)=super(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro){}
+	
 
-object luisAlberto{
-	var guitarra
-	var habilidad
 	method tocaGuitarra(guitarraAUsar){
 		guitarra=guitarraAUsar
 	
 	}
 	method guitarra()=guitarra
-	 method habilidad(){
+	 override method habilidad(){
 	 	
 	 	habilidad=(self.guitarra().unidadGuitarra()*8).min(100)
 	 	return habilidad
 	 }
-		method tocaEnFecha(dia,mes,anio){
-			
-		}	
-		method cobra(lugar){
+}
+class Estado{
+	method habilidad(unaHabilidad)
+}
+class EnGrupo inherits Estado{
+	var modificador
+	constructor(unModificador){
+		modificador=unModificador
+	}
+	method modificador()=modificador
+	override method habilidad(unaHabilidad)=unaHabilidad+self.modificador()
+}
+class Solista inherits Estado{
+	override method habilidad(unaHabilidad)=unaHabilidad
+}
+class CriterioDeCobro{
+	method cobrar(lugar,cantidad)
+}
+class PorCapacidad inherits CriterioDeCobro{
+	override method cobrar(lugar,capacidad){
+	if(lugar.capacidad()>5000)
+		return 500
+		else return 400}
+}
+class CantidadEnGrupo inherits CriterioDeCobro{
+	override method cobrar(lugar,cantidad){
+		if(cantidad<1)
+		return 100
+		else return 50
+	}
+}
+class FechaConcierto inherits CriterioDeCobro{
+	override method cobrar(lugar,cantidad){
 		
 		if(lugar.mesRecital()<9&&lugar.anioRecital()<=2017)
 		return 1000
 		else return 1200
 	
 	}	
-		method interpretaBien(cancion)=true
 }
+class Criterio{
+	method laInterpretaBien(unaCancion)
+		
+}
+
+class DuraMasDe300Segundos inherits Criterio {
+	override method laInterpretaBien(unaCancion){
+		return unaCancion.duracion()>300
+	}
+}
+class TienePalabraEspecificaLaCancion inherits Criterio{
+	var palabra
+	constructor(unaPalabra){
+		palabra=unaPalabra
+	}
+	method palabra()=palabra
+	override method laInterpretaBien(unaCancion){
+		return unaCancion.letra().contains(self.palabra())
+	}
+}
+class DiosDeLaMusica inherits Criterio{
+	override method laInterpretaBien(unaCancion)=true
+}
+
+
+	
+
+		
 object fender{
 	var unidadGuitarra=10
 	method unidadGuitarra()=unidadGuitarra
@@ -111,55 +144,39 @@ object gibson{
 		
 	}
 }
-
-object lunaPark {
-	var personasQueTocan=[joaquin,lucia,luisAlberto]
-	var diaRecital=20
-	var mesRecital =4
-	var anioRecital =2017
-	
-	var capacidad = 9290
+class Lugar{
+	var personasQueTocan
+	var diaRecital
+	var mesRecital
+	var anioRecital
+	var capacidad
+	constructor(unasPersonasQueTocan,unDiaRecital,unMesRecital,unAnioRecital,unaCapacidad){
+		personasQueTocan=unasPersonasQueTocan
+		diaRecital=unDiaRecital
+		mesRecital=unMesRecital
+		anioRecital=unAnioRecital
+		capacidad=unaCapacidad
+	}
 	method diaRecital()=diaRecital
 	method mesRecital()=mesRecital
 	method anioRecital()=anioRecital
 	method personasQueTocan()=personasQueTocan
+	method capacidad()=capacidad
 	method tienenQuePagar(){
 		return personasQueTocan.sum({persona=>persona.cobra(self)})
 	}
-	method capacidad()=capacidad
-	
-	
 }
 
-object laTrastienda{
-	var personasQueTocan=[joaquin,lucia,luisAlberto]
-	var diaRecital=15
-	var mesRecital =11
-	var anioRecital =2017
-	var capacidad =400 
-	
-	method diaRecital()=diaRecital
-	method mesRecital()=mesRecital
-	method anioRecital()=anioRecital
-	method personasQueTocan()=personasQueTocan
-	method tienenQuePagar(){
-		return personasQueTocan.sum({persona=>persona.cobra(self)})
+
+
+class Cancion{
+	var duracion
+	var letra
+	constructor(unaDuracion,unaLetra){
+		duracion=unaDuracion
+		letra=unaLetra
 	}
-	
-	method capacidad()=capacidad
-	
-	
-}
-
-object cisne{
-	var duracion=312
-	var letra=["hoy","el","viento","se","abrio","quedo","vacio","el","aire","una","vez","mas","y","el","manantial","broto","y","nadie","esta","aqui","y","puedo","ver","que","solo","estallan","las","hojas","al","brillar"]
 	method letra()=letra
 	method duracion()=duracion
 }
-object laFamilia{
-	var duracion=264
-	var letra=["quiero","brindar","por","mi","gente","sencilla","por","el","amor","brindo","por","la","familia"]
-		method letra()=letra
-	method duracion()=duracion
-}
+
