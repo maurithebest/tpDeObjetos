@@ -1,4 +1,17 @@
-
+class cantante{
+	var nombre
+	var estado
+	var habilidad 
+	constructor(unNombre,unEstado,unaHabilidad){
+		nombre=unNombre
+		estado=unEstado
+		habilidad=unaHabilidad
+	}
+	method nombre()=nombre
+	method estado()=estado
+	method habilidad()=habilidad
+	
+}
 
 
 object joaquin{
