@@ -1,20 +1,20 @@
 class Artista{
-	var nombre
+	
 	var grupo=[]
 	var estado
 	var habilidad 
 	const criterio
 	var criterioDeCobro
 	var albunes
-	constructor(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro,unosAlbunes){
-		nombre=unNombre
+	constructor(unEstado,unaHabilidad,unCriterio,unCriterioDeCobro,unosAlbunes){
+		
 		estado=unEstado
 		habilidad=unaHabilidad
 		criterio=unCriterio
 		criterioDeCobro=unCriterioDeCobro
 		albunes=unosAlbunes
 	}
-	method nombre()=nombre
+
 	method estado()=estado
 	method criterio()=criterio
 	method habilidadSola()=habilidad
@@ -33,18 +33,19 @@ class Artista{
 	method duracionDeAlbunes(){return self.albunes().sum({albun=>albun.duracionAlbum()})}
 	method totalUnidadesSalidas(){return self.albunes().sum({albun=>albun.unidadesSalidas()})}
 	method totalUnidadesVendidas(){return self.albunes().sum({albun=>albun.unidadesVendidas()})}
-	method laPego(){return self.totalUnidadesVendidas>self.totalUnidadesSalidas()*0.75}
-
+	method laPego(){return self.totalUnidadesVendidas()>self.totalUnidadesSalidas()*0.75}
+	method cambiarEstado(nuevoEstado){estado=nuevoEstado}
+	method tienePalabraCanciones(palabra){
+		return self.albunes().filter({albun=>albun.tienePalabraCanciones(palabra)})
+	}
 }
 class Cantante inherits Artista{
 	
-	constructor(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro)=super(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro){}
+	
 }
 class Guitarrista inherits Artista{
 		var guitarra
-	constructor(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro)=super(unNombre,unEstado,unaHabilidad,unCriterio,unCriterioDeCobro){}
 	
-
 	method tocaGuitarra(guitarraAUsar){
 		guitarra=guitarraAUsar
 	
@@ -81,7 +82,7 @@ class PorCapacidad inherits CriterioDeCobro{
 }
 class CantidadEnGrupo inherits CriterioDeCobro{
 	override method cobrar(lugar,cantidad){
-		if(cantidad<1)
+		if(cantidad<0)
 		return 100
 		else return 50
 	}
@@ -162,28 +163,35 @@ class Lugar{
 	method personasQueTocan()=personasQueTocan
 	method capacidad()=capacidad
 	method tienenQuePagar(){
-		return personasQueTocan.sum({persona=>persona.cobra(self)})
+		return personasQueTocan.sum({persona=>persona.cobrar(self)})
 	}
 }
 
 
 
 class Cancion{
-	var nombre
+	
 	var duracion
 	var letra
-	constructor(unNombre,unaDuracion,unaLetra){
-		nombre=unNombre
+	constructor(unaDuracion,unaLetra){
+		
 		duracion=unaDuracion
 		letra=unaLetra
 	}
-	method nombre()=nombre
+	
 	method letra()=letra
 	method duracion()=duracion
+	method esCorta(){return self.duracion()<180}
+	method longitudCancion(){
+		return self.letra().size()
+	}
+	method tienePalabra(palabra){
+		return self.letra().contains(palabra)
+	}
 }
 
 class Album{
-	var nombre
+	
 	var diaSalida
 	var mesSalida
 	var anioSalida
@@ -191,8 +199,8 @@ class Album{
 	var unidadesALaVenta
 	var unidadesVendidas
 	
-	constructor(unNombre,unDiaSalida,unMesSalida,unAnioSalida,unasCanciones,unasUnidadesALaVenta,unasUnidadesVendidas){
-	nombre=unNombre
+	constructor(unDiaSalida,unMesSalida,unAnioSalida,unasCanciones,unasUnidadesALaVenta,unasUnidadesVendidas){
+	
 	diaSalida=unDiaSalida
 	mesSalida=unMesSalida
 	anioSalida=unAnioSalida
@@ -201,11 +209,16 @@ class Album{
 	unidadesVendidas=unasUnidadesVendidas
 	}
 	
-	method nombre()=nombre
+	method tienePalabraCanciones(palabra){
+		return self.canciones().filter({cancion=>cancion.tienePalabra(palabra)})
+	}
 	method canciones()=canciones
 	method unidadesSalientes()=unidadesALaVenta
 	method unidadesVendidas()=unidadesVendidas
 	method duracionAlbum(){return self.canciones().sum({cancion=>cancion.duracion()})
 	}
-	method albumCorto(){return self.canciones.all({cancion.duracion()<180})}
+	method albumCorto(){return self.canciones().all({cancion=>cancion.duracion()<180})}
+	method cancionMasLarga(){ return self.canciones().sortBy({cancion=>cancion.letra().max()}).head()
+		
+	}
 }
