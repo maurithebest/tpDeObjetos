@@ -1,0 +1,120 @@
+import tpObjetos.*
+describe "tests de tpObjetos" {
+	const laFamilia
+	const cisne
+	const albunoso
+	const joaquin
+	const lucia
+	const luisAlberto
+	const lunaPark
+	const laTrastienda
+	fixture{
+		laFamilia = new Cancion(264,["quiero","brindar","por","mi","gente","sencilla","por","el","amor","brindo","por","la","familia"])
+		cisne = new Cancion(312,["Hoy", "el" ,"viento", "se" ,"abrió", "quedó" ,"vacío", "el" ,"aire", "una", "vez", "más"," y"," el"," manantial"," brotó"," y"," nadie", "está", "aquí", "y" ,"puedo" ,"ver" ,"que" ,"solo" ,"estallan" ,"las" ,"hojas" ,"al", "brilla"])
+		albunoso = new Album(1,1,1,[laFamilia],1,1)
+		joaquin= new Cantante(new EnGrupo(5),20, new DuraMasDe300Segundos(),new CantidadEnGrupo(),albunoso)	
+		lucia = new Cantante(new Solista(),70,new TienePalabraEspecificaLaCancion("familia"),new PorCapacidad(),albunoso)
+		luisAlberto = new Guitarrista(new Solista(),0,new DiosDeLaMusica(),new FechaConcierto(),albunoso)
+		lunaPark = new Lugar([luisAlberto,lucia,joaquin],20,4,2017,9290)
+		laTrastienda =new Lugar([luisAlberto,lucia,joaquin],15,11,2017,400)
+	}
+
+	test "joaquin canta en el grupo Pimpinela, su habilidad es de 25" {
+		
+		joaquin.agregarAGrupo("Pimpinela")
+		assert.equals(joaquin.habilidad(),25)
+
+	}test "joaquin sale de el grupo Pimpinela y canta solo, su habilidad es de 20" {
+		
+		joaquin.cambiarEstado(new Solista())
+		assert.equals(joaquin.habilidad(),20)
+
+	}
+	test "lucia canta en el grupo Pimpinela, su habilidad es de 50" {
+		lucia.agregarAGrupo("Pimpinela")
+		lucia.cambiarEstado(new EnGrupo((-20)))
+		assert.equals(lucia.habilidad(),50)
+
+	}
+	test "lucia sale de el grupo Pimpinela y canta sola, su habilidad es de 70" {
+		
+		assert.equals(lucia.habilidad(),70)
+
+	}
+	test "luis aberto toca con la Fender, su habilidad es de 80" {
+		luisAlberto.tocaGuitarra(fender)
+		assert.equals(luisAlberto.habilidad(),80)
+}
+	test "luis aberto toca con una gibson sana, su habilidad es de 100" {
+		luisAlberto.tocaGuitarra(gibson)
+		gibson.estadoBuena()
+		assert.equals(luisAlberto.habilidad(),100)
+}
+	test "luis aberto toca con una gibson mala, su habilidad es de 40" {
+		luisAlberto.tocaGuitarra(gibson)
+		gibson.estadoMalo()
+		assert.equals(luisAlberto.habilidad(),40)
+}
+
+
+	test "joaquin no puede interpretar la familia" {
+		
+		assert.notThat(joaquin.interpretaBien(laFamilia))
+
+	}
+	test "joaquin puede interpretar cisne" {
+		assert.that(joaquin.interpretaBien(cisne))
+
+	}
+	test "lucia puede interpretar la familia" {
+		assert.that(lucia.interpretaBien(laFamilia))
+
+	}
+	test "lucia no puede interpretar cisne" {
+		assert.notThat(lucia.interpretaBien(cisne))
+
+	}
+	test "luis alberto puede interpretar la familia" {
+		assert.that(luisAlberto.interpretaBien(laFamilia))
+
+	}
+	test "luis alberto puede interpretar cisne" {
+		assert.that(luisAlberto.interpretaBien(cisne))
+
+	}
+	test "joaquin cobra por presentarse al luna park en grupo 50 pesos" {
+		joaquin.agregarAGrupo("Pimpinela")
+		
+		assert.equals(joaquin.cobrar(lunaPark),50)
+	}
+	test "cobra lucia a por presentarse en el luna park 500 pesos" {
+		assert.equals(lucia.cobrar(lunaPark),500)
+
+	}
+	
+	test "cobra lucia por presentarse en la trastienda 400 pesos" {
+		assert.equals(lucia.cobrar(laTrastienda),400)
+
+	}
+	test "cobra luis alberto por presentarse en el luna park 1000 pesos" {
+		assert.equals(luisAlberto.cobrar(lunaPark),1000)
+
+	}
+	test "cobra luis alberto por presentarse en la trastienda 1200 pesos" {
+		assert.equals(luisAlberto.cobrar(laTrastienda),1200)
+
+	}
+	test "el luna park paga a los artistas" {
+		joaquin.agregarAGrupo("Pimpinela")
+		
+		assert.equals(lunaPark.tienenQuePagar(),1550)
+
+	}
+	test "la trastienda paga a los artistas" {
+		joaquin.agregarAGrupo("Pimpinela")
+		
+		assert.equals(laTrastienda.tienenQuePagar(),1650)
+
+	}
+	
+	}
