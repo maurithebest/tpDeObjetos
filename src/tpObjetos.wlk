@@ -31,12 +31,12 @@ class Artista{
 	method cobrar(lugar){return self.criterioDeCobro().cobrar(lugar,self.grupo().size())}
 	method esMinimalista(){return self.albunes().all({albun=>albun.albumCorto()})}
 	method duracionDeAlbunes(){return self.albunes().sum({albun=>albun.duracionAlbum()})}
-	method totalUnidadesSalidas(){return self.albunes().sum({albun=>albun.unidadesSalidas()})}
+	method totalUnidadesSalidas(){return self.albunes().sum({albun=>albun.unidadesSalientes()})}
 	method totalUnidadesVendidas(){return self.albunes().sum({albun=>albun.unidadesVendidas()})}
 	method laPego(){return self.totalUnidadesVendidas()>self.totalUnidadesSalidas()*0.75}
 	method cambiarEstado(nuevoEstado){estado=nuevoEstado}
 	method tienePalabraCanciones(palabra){
-		return self.albunes().filter({albun=>albun.tienePalabraCanciones(palabra)})
+		return self.albunes().flatMap({albun=>albun.tienePalabraCanciones(palabra)})
 	}
 }
 class Cantante inherits Artista{
@@ -218,7 +218,7 @@ class Album{
 	method duracionAlbum(){return self.canciones().sum({cancion=>cancion.duracion()})
 	}
 	method albumCorto(){return self.canciones().all({cancion=>cancion.duracion()<180})}
-	method cancionMasLarga(){ return self.canciones().sortBy({cancion=>cancion.letra().max()}).head()
+	method cancionMasLarga(){ return self.canciones().max({cancion=>cancion.letra().size()})
 		
 	}
 }
