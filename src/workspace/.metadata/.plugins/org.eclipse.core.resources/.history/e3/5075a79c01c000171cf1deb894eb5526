@@ -1,0 +1,70 @@
+
+import example.*
+describe "group of tests" {
+	const laFamilia
+	const cisne
+	const joaquin
+	const lucia
+	const especialLaFamilia
+	const laSole
+	const eres
+	const corazonAmericano
+	const remixLaFamilia
+	const mashupA
+	const crisantemo
+	const almaDeDiamante
+	const pdepalooza
+	const lunaPark
+	const paraLosArboles
+	const justCrisantemo
+	const luisAlberto
+	//const joaquin2
+	const aliciaEnElPaisDeLasMaravillas
+	const soledad
+	//const lucia2
+	const kike
+	
+	fixture{
+		//joaquin2= new Artista("joaquin",new Solista("familia"),20,new CantidadEnGrupo(),[especialLaFamilia])	
+		
+		laFamilia = new Cancion("la familia",264,["quiero","brindar","por","mi","gente","sencilla","por","el","amor","brindo","por","la","familia"])
+		cisne = new Cancion("cisne", 212,["hoy", "el" ,"viento", "se" ,"abrió", "quedó" ,"vacío", "el" ,"aire", "una", "vez", "más"," y"," el"," manantial"," brotó"," y"," nadie", "está", "aquí", "y" ,"puedo" ,"ver" ,"que" ,"solo" ,"estallan" ,"las" ,"hojas" ,"al", "brilla"])
+		eres = new Cancion("eres",145,["eres", "lo", "mejor", "que", "me", "pasó", "en", "la", "vida", "no", "tengo", "duda", "no", "habrá", "más", "nada", "después", "de", "ti","eres", "lo", "que", "le", "dio", "brillo", "al", "día", "a", "día", "y", "así", "será", "por", "siempre", "no", "cambiará", "hasta", "el", "final", "de", "mis", "días"])
+		corazonAmericano = new Cancion("corazon americano",154,["canta", "corazón", "canta", "más", "alto", "que", "tu", "pena", "al", "fin", "se", "va", "marchando", "el", "nuevo", "milenio", "ha", "de", "encontrarnos", "junto", "corazón", "como", "soñamos"]) 
+		remixLaFamilia= new Remix("la familia",264,["quiero","brindar","por","mi","gente","sencilla","por","el","amor","brindo","por","la","familia"],laFamilia)
+		almaDeDiamante = new Cancion("almaDeDiamante",216,["ven", "a", "mí", "con", "tu", "dulce", "luz", "alma", "de", "diamante", "y", "aunque", "el", "sol", "se", "nuble", "después", "sos", "alma", "de", "diamante", "cielo", "o", "piel", "silencio", "o", "verdad", "sos", "alma", "de", "diamante", "por", "eso", "ven", "así", "con", "la", "humanidad" ,"alma", "de", "diamante"])
+		crisantemo = new Cancion("crisantemo",175,["tócame", "junto", "a", "esta", "pared", "yo", "quede", "por", "aquí...", "cuando", "no", "hubo", "más", "luz...", "quiero", "mirar", "a", "través", "de", "mi", "piel...", "crisantemo", "que", "se", "abrió...", "encuentra", "el", "camino", "hacia", "el", "cielo"])
+		paraLosArboles = new Album("para los arboles",31,3,2003,[cisne,almaDeDiamante],50000,49000)
+		justCrisantemo = new Album("just crisantemo",5,12,2007,[crisantemo],28000,27500)
+		especialLaFamilia = new Album("especial la familia", 17,6,1992,[laFamilia],100000,89000)
+		laSole = new Album("la Sole",4,2,2005,[eres, corazonAmericano],200000,130000)
+		joaquin= new Artista("joaquin",new MusicoDeGrupo(5),20,new CantidadEnGrupo(100),[especialLaFamilia],new Largueros(300))	
+		lucia = new Artista("lucia",new Solista("familia"),70,new PorCapacidad(5000,500),[],new Palabreros("familia"))
+		//lucia2 = new Artista("lucia",new Solista("familia"),90,new PorCapacidad(),[])
+		
+		mashupA= new Mashup("mashupA",121,["hola"],[almaDeDiamante,crisantemo])
+		aliciaEnElPaisDeLasMaravillas = new Cancion("alicia en el pais de las maravillas",210,["quién", "sabe", "alicia", "este", "país", "no", "estuvo", "hecho", "porque", "sí", "te", "vas", "a", "ir", "vas", "a", "salir", "pero", "te", "quedas", "¿dónde", "más", "vas", "a", "ir?", "y", "es", "que", "aquí", "sabes", "el", "trabalenguas", "trabalenguas", "el", "asesino", "te", "asesina", "y", "es", "mucho", "para", "ti", "se", "acabó", "ese", "juego", "que", "te", "hacía", "feliz"])
+		
+		luisAlberto = new Artista("luis Alberto",new LuisAlberto(fender),0,new FechaConcierto(1000,30,9,2017,1.2),[paraLosArboles,justCrisantemo],new Impareros())
+		lunaPark = new Lugar([luisAlberto,lucia,joaquin],20,4,2017,9290)
+		//laTrastienda =new Lugar([luisAlberto,lucia,joaquin],15,11,2017,400)
+		kike = new Artista("kike",new MusicoDeGrupo(20),60,new FechaConcierto(4000,8,1,2018,0.5),[],new Impareros())
+		pdepalooza= new Presentacion(lunaPark,15,12,2017,[new CriterioPorHabilidad(70),new CriterioPorObra(),new CriterioPorCancion(aliciaEnElPaisDeLasMaravillas)])
+		soledad = new Artista("soledad",new Solista("amor"),80,new CantidadEnGrupo(6000),[laSole],new Palabreros("amor"))
+	}
+	test "Queremos saber si Joaquín canta bien la canción “La Familia”" {
+		joaquin.cambiarTipo(new Impareros())
+		assert.that(joaquin.interpretaBien(laFamilia))
+	}
+	test "Queremos saber si Joaquín canta bien la canción “Cisne”." {
+		joaquin.cambiarTipo(new Impareros())
+		assert.notThat(joaquin.interpretaBien(cisne))
+	}
+	test "Hacer que Kike pase a ser palabrero de la palabra “de”. 
+Queremos saber de esta lista de canciones: “Corazón americano”, “Eres”, “La familia”, “Cisne”, “Alma de diamante”, “Canción de Alicia en el país” y “Crisantemo” cuáles puede tocar bien.
+" {
+		kike.cambiarTipo(new Palabreros("de"))
+		assert.that(aliciaEnElPaisDeLasMaravillas.letra().contains("qui"))
+	}
+	
+}

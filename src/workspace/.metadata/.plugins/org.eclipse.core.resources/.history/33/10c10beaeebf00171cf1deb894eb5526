@@ -1,0 +1,287 @@
+class Artista{
+	
+	var grupo=[]
+	var estado
+	var habilidad 
+	var criterioDeCobro
+	var albunes
+	constructor(unEstado,unaHabilidad,unCriterioDeCobro,unosAlbunes){
+		
+		estado=unEstado
+		habilidad=unaHabilidad
+		criterioDeCobro=unCriterioDeCobro
+		albunes=unosAlbunes
+	}
+
+	method estado()=estado
+	method habilidadSola()=habilidad
+	method criterioDeCobro()=criterioDeCobro
+	method grupo()=grupo
+	method agregarAGrupo(grupoAEntrar){grupo.add(grupoAEntrar)
+										self.cambiarEstado(new MusicoDeGrupo(-20))
+										
+	}
+	method cambiarEstado(unEstado){estado=unEstado}
+	method salirDeGrupo(grupoASalir){grupo.remove(grupoASalir)
+		
+	}
+	method albunes()=albunes
+	method habilidad()=self.estado().habilidad(self.habilidadSola())
+	
+	method interpretaBien(unaCancion)= self.estado().laInterpretaBien(unaCancion)|| self.habilidad()>60 || self.albunes().any({albun=>albun.tieneCancion(unaCancion)})
+	method cobrar(lugar){return self.criterioDeCobro().cobrar(lugar,self.grupo().size())}
+	method esMinimalista(){return self.albunes().all({albun=>albun.albumCorto()})}
+	method duracionDeAlbunes(){return self.albunes().sum({albun=>albun.duracionAlbum()})}
+	method totalUnidadesSalidas(){return self.albunes().sum({albun=>albun.unidadesSalidas()})}
+	method totalUnidadesVendidas(){return self.albunes().sum({albun=>albun.unidadesVendidas()})}
+	method laPego(){return self.totalUnidadesVendidas()>self.totalUnidadesSalidas()*0.75}
+
+}
+class MusicoDeGrupo {
+    const cuantoAumentaLaHabilidad
+    constructor(cuantoAumenta){
+        cuantoAumentaLaHabilidad = cuantoAumenta
+    }
+    method cuantoAumentaLaHabilidad() = cuantoAumentaLaHabilidad
+    
+    method habilidad(habilidadBase) = habilidadBase + self.cuantoAumentaLaHabilidad()
+    
+    method laInterpretaBien(unaCancion) = unaCancion.duracion() > 300
+    
+   }
+
+class Solista {
+    const palabraParaInterpretarBien
+    constructor(unaPalabraParaInterpretarBien){
+        palabraParaInterpretarBien = unaPalabraParaInterpretarBien
+    }
+    
+    method palabraParaInterpretarBien() = palabraParaInterpretarBien
+    
+    method habilidad(habilidadBase) = habilidadBase
+    
+    method laInterpretaBien(unaCancion) = unaCancion.letra().contains(self.palabraParaInterpretarBien())
+    
+    }
+
+class LuisAlberto{
+		var guitarra
+	constructor(unaGuitarra){guitarra=unaGuitarra}	
+		
+	
+	
+	
+	
+	method laInterpretaBien(unaCancion)=true
+	
+	method guitarra()=guitarra
+	method habilidad(unaHabilidad){
+	 	
+	 	return (self.guitarra().unidadGuitarra()*8).min(100)
+	 	
+	 }
+}
+
+
+
+
+class PorCapacidad {
+	method cobrar(lugar,capacidad){
+	if(lugar.capacidad()>5000)
+		return 500
+		else return 400}
+}
+class CantidadEnGrupo {
+	method cobrar(lugar,cantidad){
+		if(cantidad<1)
+		return 100
+		else return 50
+	}
+}
+class FechaConcierto {
+		method cobrar(lugar,cantidad){
+		
+		if(lugar.mesRecital()<9&&lugar.anioRecital()<=2017)
+		return 1000
+		else return 1200
+	
+	}	
+}
+
+
+
+
+
+	
+
+		
+object fender{
+	var unidadGuitarra=10
+	method unidadGuitarra()=unidadGuitarra
+	}
+object gibson{
+	var estado
+	var unidadGuitarra
+	method estadoMalo(){estado="malo"}
+	method estadoBuena(){estado="bueno"}
+	method estado()=estado
+	method unidadGuitarra(){
+		if (self.estado()=="bueno"){
+		unidadGuitarra=15
+		return unidadGuitarra}
+		else{ unidadGuitarra=5
+			return unidadGuitarra
+		}
+		
+	}
+}
+class Lugar{
+	var personasQueTocan
+	var diaRecital
+	var mesRecital
+	var anioRecital
+	var capacidad
+	constructor(unasPersonasQueTocan,unDiaRecital,unMesRecital,unAnioRecital,unaCapacidad){
+		personasQueTocan=unasPersonasQueTocan
+		diaRecital=unDiaRecital
+		mesRecital=unMesRecital
+		anioRecital=unAnioRecital
+		capacidad=unaCapacidad
+	}
+	method diaRecital()=diaRecital
+	method mesRecital()=mesRecital
+	method anioRecital()=anioRecital
+	method personasQueTocan()=personasQueTocan
+	method capacidad()=capacidad
+	method tienenQuePagar(){
+		return personasQueTocan.sum({persona=>persona.cobra(self)})
+	}
+}
+
+
+
+class Cancion{
+	var nombre
+	var duracion
+	var letra
+	constructor(unNombre,unaDuracion,unaLetra){
+		nombre=unNombre
+		duracion=unaDuracion
+		letra=unaLetra
+	}
+	method nombre()=nombre
+	method letra()=letra.fold("",{unString,otroString=>unString+" "+otroString}).drop(1)
+	method duracion()=duracion
+	method longitudCancion(){
+		return self.letra().size()
+	}
+	method durasMasQue(otraCancion){
+		return self.duracion()>otraCancion.duracion()
+	}
+	method sosMasLarga(otraCancion){
+		return self.longitudCancion()>otraCancion.longitudCancion()
+	}
+	method tienenNombresDiferentes(otraCancion){
+		return self.nombre()!=otraCancion.nombre()
+	}
+}
+
+class Remix inherits Cancion{
+	var cancion
+	constructor(unNombre,unaDuracion,unaLetra,unaCancion)=super(unNombre,unaDuracion,unaLetra){
+		cancion=unaCancion
+	}
+	override method duracion(){
+		return cancion.duracion()*3
+	}
+	override method letra(){
+		return "mueve tu cuelpo baby " + cancion.letra() + " yeah oh yeah"
+	}
+	
+}
+
+class Mashup inherits Cancion{
+	var canciones
+	
+	constructor(unNombre,unaDuracion,unaLetra,unasCanciones)=super(unNombre,unaDuracion,unaLetra){
+		canciones=unasCanciones
+		
+	}
+	method canciones()=canciones
+	override method duracion(){ return self.canciones().max({cancion=>cancion.duracion()})	
+	}
+	override method letra()= self.canciones().fold("",{primeraCancion, otraCancion =>primeraCancion + " " + otraCancion.letra()}).drop(1)
+	}
+
+class Album{
+	var nombre
+	var diaSalida
+	var mesSalida
+	var anioSalida
+	var canciones
+	var unidadesALaVenta
+	var unidadesVendidas
+	
+	constructor(unNombre,unDiaSalida,unMesSalida,unAnioSalida,unasCanciones,unasUnidadesALaVenta,unasUnidadesVendidas){
+	nombre=unNombre
+	diaSalida=unDiaSalida
+	mesSalida=unMesSalida
+	anioSalida=unAnioSalida
+	canciones=unasCanciones
+	unidadesALaVenta=unasUnidadesALaVenta
+	unidadesVendidas=unasUnidadesVendidas
+	}
+	
+	method nombre()=nombre
+	method canciones()=canciones
+	method unidadesSalientes()=unidadesALaVenta
+	method unidadesVendidas()=unidadesVendidas
+	method duracionAlbum(){return self.canciones().sum({cancion=>cancion.duracion()})
+	}
+	method albumCorto(){return self.canciones().all({cancion=>cancion.duracion()<180})}
+	method cancionMasLarga(){ return self.canciones().max({cancion=>cancion.longitudCancion()})}
+	method cancionMasDuradera(){ return self.canciones().max({cancion=>cancion.duracion()})
+		
+	}
+	method tieneCancion(unaCancion)= self.canciones().contains(unaCancion)
+}
+
+class Presentacion {
+    var musicos = []
+    var lugar
+    var dia
+    var mes
+    var anio
+    constructor(unLugar, unDia, unMes, unAnio){
+    	lugar=unLugar
+    	dia=unDia
+    	mes=unMes
+    	anio=unAnio
+    }
+    method agregarMusico(unMusico){
+    	self.lanzarExcepcionSi(unMusico.habilidad()<70,"no tiene la habilidad necesaria para estar en la presentacion")
+        self.lanzarExcepcionSi(unMusico.albunes().isEmpty(),"no compuso ninguna canciones")
+        
+        musicos.add(unMusico)
+    }
+    method lanzarExcepcionSi(criterio,mensaje){
+    	if(criterio){
+    		throw new ExcepcionMusical(mensaje)
+    	}
+    }
+    method musicos() = musicos
+    method musicos(nuevosMusicos){
+        self.musicos().clear()
+        self.musicos().addAll(nuevosMusicos)
+    }
+    method lugar() = lugar
+    method lugar(nuevoLugar) {
+        lugar = nuevoLugar
+    }
+   
+    method costo() = self.musicos().sum({musico => musico.cuantoCobrasLaHoraEn(self)})
+    
+    method soloToca(unMusico) = self.musicos() == [unMusico]
+}
+
+class ExcepcionMusical inherits Exception{}
